@@ -1,0 +1,14 @@
+# A copy of this file should be placed in the root directory of the
+# dagster project and renamed .env
+# Then add your specific contents to that file. 
+# Make sure you add the .env file to your .gitignore so it's not
+# copied to your repository.
+#
+
+RAW_DIRECTORY = /path/to/viper_vis/raw/tiffs
+db_type = postgresql
+db_user = user
+db_pass = password
+db_name = database_name
+db_host = localhost
+db_port = 5438

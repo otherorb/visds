@@ -11,12 +11,12 @@ from visdag.db_con import get_postgres_db
 
 
 @asset
-def raw_products_table_db_config():
+def vis_raw_images_dir():
+    vis_raw_images_dir = {
+            "vis_raw_images_dir" : os.getenv("RAW_DIRECTORY"),
+            }
     
-    raw_psql_db_url = "postgresql://viper:viper@localhost:5438/visdb"
-
-    return(raw_psql_db_url)
-
+    return(vis_raw_images_dir)
 
 if __name__ == "__main__":
-    materialize([raw_products_table_db_config])
+    materialize([vis_raw_images_dir])
