@@ -53,61 +53,6 @@ slog_parms = [
     "/ViperGround/Images/ImageData/Hazcam_back_right_slog",
 ]
 
-
-class Watcher(list):
-
-    # on_data is the callback function used to take the data
-    # received from yamcs and send it to the dagster job.
-    def on_data(self, data):
-        for parameter in data.parameters:
-            print(f"{parameter.generation_time} - {parameter.name}")
-            self.append(
-                (
-                    parameter.name,
-                    parameter.generation_time.isoformat(),
-                    parameter.eng_value['imageHeader']
-                )
-            )
-            #if not len(self) % 4:
-            #    raise ValueError("Every fourth exception.")
-        print("*************************************")
-        print(self)
-        print("*******************************************************")
-
-
-        # The Watcher object is given to us as list with the following format:
-        # [
-        #  ('/ViperGround/Images/ImageData/Navcam_left_slog', 
-        #   '2023-01-12T23:32:47.931000-07:00', 
-        #   OrderedDict(
-        #                [
-        #                  ('autoExposure', 0), 
-        #                  ('imageWidth', 2048), 
-        #                  ('padding', 0), 
-        #                  ('exposureTime', 111), 
-        #                  ('imageId', 0), 
-        #                  ('immediateDownloadInfo', 10), 
-        #                  ('offset', 0), 
-        #                  ('lobt', 1700921056), 
-        #                  ('processingInfo', 20), 
-        #                  ('adcGain', 0), 
-        #                  ('outputImageType', 'JBIG2_IMAGE'), 
-        #                  ('imageHeight', 2048), 
-        #                  ('voltageRamp', 0), 
-        #                  ('ppaGain', 0), 
-        #                  ('cameraId', 0), 
-        #                  ('imageDepth', 1), 
-        #                  ('stereo', 1), 
-        #                  ('temperature', 0), 
-        #                  ('captureId', 1), 
-        #                  ('outputImageMask', 2)
-        #                ]
-        #              )
-        #    )
-        # ]
-        # 
-
-
 def get_image_header(data):
     dag_client = DagsterGraphQLClient("localhost", port_number=3000)
     image_header = []
@@ -172,11 +117,8 @@ def main():
 
     # 
 
-    watched = Watcher()
-
     subscription = processor.create_parameter_subscription(
             parameters + slog_parms,
-            #on_data=watched.on_data
             on_data=get_image_header
             )
     print(subscription)
